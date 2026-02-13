@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kenya 🧡</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    overflow-x: hidden;
+    text-align: center;
+    color: white;
+    transition: background 1.5s ease;
+}
+
+body.cinematic { background: #000; }
+
+.container {
+    margin-top: 8vh;
+    padding: 20px;
+    transition: transform 1.5s ease, opacity 1.5s ease;
+    position: relative;
+    z-index: 10;
+}
+
+.container.zoom {
+    transform: scale(1.05);
+    opacity: 0.95;
+}
+
+h1 { font-size: 2.5em; }
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 15px;
+}
+
+#yes { background-color: #ff7a00; color: white; }
+#yes:hover { transform: scale(1.1); }
+
+#no {
+    background-color: #444;
+    color: white;
+    position: absolute;
+}
+
+.hidden { display: none; }
+
+#counter { margin-top: 20px; font-size: 1.2em; }
+
+/* CORAZONES */
+.heart {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    background: #ff7a00;
+    transform: rotate(45deg);
+    animation: float 7s infinite ease-in;
+    opacity: 0.6;
+    z-index: 1;
+}
+
+.heart:before,
+.heart:after {
+    content: "";
+    width: 20px;
+    height: 20px;
+    background: #ff7a00;
+    border-radius: 50%;
+    position: absolute;
+}
+
+.heart:before { top: -10px; left: 0; }
+.heart:after { left: -10px; top: 0; }
+
+@keyframes float {
+    0% { transform: translateY(100vh) rotate(45deg); opacity: 0; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-10vh) rotate(45deg); opacity: 0; }
+}
+
+/* CARTA */
+.envelope {
+    width: 300px;
+    height: 200px;
+    background: #ff7a00;
+    margin: 30px auto;
+    position: relative;
+    border-radius: 10px;
+    perspective: 1000px;
+}
+
+.flap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ff8c1a;
+    clip-path: polygon(0 0, 50% 60%, 100% 0);
+    transform-origin: top;
+    transition: transform 1s ease;
+}
+
+.envelope.open .flap { transform: rotateX(-180deg); }
+
+.letter {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    background: white;
+    color: black;
+    top: 5%;
+    left: 5%;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    transform: translateY(100%);
+    transition: transform 1s ease 0.5s;
+    overflow-y: auto;
+}
+
+.envelope.open .letter { transform: translateY(0); }
+
+/* BOTON PICAME */
+#secretBtn{
+background:#ff7a00;
+color:white;
+margin-top:20px;
+}
+
+/* PERGAMINO */
+#invitationOverlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.85);
+display:none;
+align-items:center;
+justify-content:center;
+z-index:9999;
+}
+
+.invitationCard{
+background:#fdf6e3;
+width:600px;
+max-width:90%;
+padding:60px;
+border-radius:10px;
+color:#5a3e1b;
+transform:scaleY(0);
+transform-origin:top;
+animation:unfold 1.2s ease forwards;
+position:relative;
+box-shadow:0 30px 60px rgba(0,0,0,.6);
+}
+
+@keyframes unfold{
+0%{transform:scaleY(0);opacity:0;}
+100%{transform:scaleY(1);opacity:1;}
+}
+
+.seal{
+width:80px;
+height:80px;
+background:radial-gradient(circle,#b30000,#660000);
+border-radius:50%;
+position:absolute;
+top:-40px;
+left:50%;
+transform:translateX(-50%) scale(0);
+animation:sealDrop .8s ease .8s forwards;
+}
+
+@keyframes sealDrop{
+0%{transform:translateX(-50%) scale(0);}
+100%{transform:translateX(-50%) scale(1);}
+}
+
+/* === POLAROIDS DISPERSAS === */
+.polaroid {
+    position: fixed;
+    width: 160px;
+    background: white;
+    padding: 10px 10px 25px 10px;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    border-radius: 5px;
+    transform: rotate(calc(-10deg + 20deg * var(--r)));
+    transition: transform 0.5s ease, left 0.5s ease, top 0.5s ease;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.polaroid img {
+    width: 100%;
+    display: block;
+    border-radius: 4px;
+}
+
+.polaroid:hover {
+    transform: scale(1.08) rotate(0deg);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>Kenya 🧡</h1>
+    <p>Desde el 7/7/2025 a las 7:00 PM</p>
+    <div id="counter"></div>
+
+    <h2>¿Quieres ser mi San Valentín para siempre?</h2>
+
+    <button id="yes">Sí 🧡</button>
+    <button id="no">No 😏</button>
+
+    <div id="finalMessage" class="hidden">
+        <div class="envelope" id="envelope">
+            <div class="flap"></div>
+            <div class="letter">
+                <h2>Eres mi persona favorita 🧡</h2>
+
+                <h3>7 razones por las que te amo:</h3>
+                <p>1. Porque me dejas un pedazote de cama</p>
+                <p>2. Tu risa y tu sonrisa me alegran el alma</p>
+                <p>3. Eres mi media mandarina</p>
+                <p>4. Sacar la lengua por chivearte es el mayor acto de amor que puedo percibir</p>
+                <p>5. Eres una mujer increíble y extremadamente fuerte</p>
+                <p>6. Puedo acudir a ti cuando no quiero saber nada de nadie más</p>
+                <p>7. Solo 7 razones no bastan para describir todo lo que siento</p>
+
+                <button id="secretBtn">PICAME 😏💌</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PERGAMINO -->
+<div id="invitationOverlay">
+<div class="invitationCard">
+<div class="seal"></div>
+<h2>Invitación Especial 💌</h2>
+<p>📅 14 de Febrero</p>
+<p>⏰ 3:00 PM</p>
+<p>💄 Debes estar lista a la 1:30 PM</p>
+<p>👗 Código de vestimenta: Formal</p>
+<p>🍝 Tipo de comida: Italiana</p>
+<p>📍 El lugar… es una sorpresa</p>
+</div>
+</div>
+
+<!-- AUDIOS -->
+<audio id="song" src="EnjambreVinculo.mp3"></audio>
+<audio id="openSound" src="open.mp3"></audio>
+
+<script>
+const startDate = new Date("2025-07-07T19:00:00-07:00");
+
+function updateCounter() {
+    const now = new Date();
+    const diff = now - startDate;
+    const d = Math.floor(diff / (1000*60*60*24));
+    const h = Math.floor((diff/(1000*60*60))%24);
+    const m = Math.floor((diff/(1000*60))%60);
+    const s = Math.floor((diff/1000)%60);
+    document.getElementById("counter").innerHTML =
+    `Han pasado ${d} días, ${h} horas, ${m} minutos y ${s} segundos 🧡`;
+}
+setInterval(updateCounter,1000);
+updateCounter();
+
+// BOTÓN NO ESCAPA
+const noBtn = document.getElementById("no");
+noBtn.addEventListener("mouseover", () => {
+    noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+    noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+});
+
+// BOTÓN SÍ
+document.getElementById("yes").addEventListener("click", function() {
+
+    if (document.body.classList.contains("photos-loaded")) return;
+    document.body.classList.add("photos-loaded");
+
+    document.getElementById("song").play();
+
+    document.body.classList.add("cinematic");
+    document.querySelector(".container").classList.add("zoom");
+    document.getElementById("finalMessage").classList.remove("hidden");
+
+    setTimeout(() => {
+        document.getElementById("envelope").classList.add("open");
+    }, 800);
+
+    const photoNames = [
+        "foto1.jpeg",
+        "foto2.jpeg",
+        "foto3.jpeg",
+        "foto4.jpeg",
+        "foto5.jpeg",
+        "foto6.jpeg",
+        "foto7.jpeg",
+        "foto8.jpeg"
+    ];
+
+    function randomPosition(element) {
+        const padding = 220;
+        const x = Math.random() * (window.innerWidth - padding);
+        const y = Math.random() * (window.innerHeight - padding);
+        element.style.left = x + "px";
+        element.style.top = y + "px";
+    }
+
+    photoNames.forEach((name, index) => {
+
+        setTimeout(() => {
+
+            const polaroid = document.createElement("div");
+            polaroid.className = "polaroid";
+            polaroid.style.opacity = "0";
+            polaroid.style.transform = "scale(2)";
+            polaroid.style.setProperty('--r', Math.random());
+
+            const img = document.createElement("img");
+            img.src = name;
+
+            polaroid.appendChild(img);
+            document.body.appendChild(polaroid);
+
+            randomPosition(polaroid);
+
+            // Fade + zoom elegante
+            setTimeout(() => {
+                polaroid.style.transition = "all 1s ease";
+                polaroid.style.opacity = "1";
+                polaroid.style.transform =
+                    "scale(1) rotate(" + (Math.random()*20-10) + "deg)";
+            }, 100);
+
+            // Si la toca, se mueve
+            polaroid.addEventListener("click", () => {
+                randomPosition(polaroid);
+                polaroid.style.transform =
+                    "scale(1.1) rotate(" + (Math.random()*20-10) + "deg)";
+            });
+
+        }, index * 500);
+
+    });
+
+});
+
+// BOTÓN PICAME
+document.getElementById("secretBtn").addEventListener("click", function(){
+    document.getElementById("invitationOverlay").style.display="flex";
+    document.getElementById("openSound").play();
+});
+</script>
+
+
+</body>
+</html>
